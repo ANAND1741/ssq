@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import ssq.AESUtil;
 import ssq.dao.TransactionObject;
+import ssq.entity.TransactionEntity;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -40,6 +41,16 @@ public class EncryptionService {
             String transactionString = new ObjectMapper().writeValueAsString(transactionObject);
             return AESUtil.encryptPasswordBased(transactionString, key, iv);
         }catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | InvalidKeyException | IOException | BadPaddingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public TransactionEntity decryptData(String sealedObject){
+        try {
+            String decryptedOutput =  AESUtil.decryptPasswordBased(sealedObject, key, iv);
+            return new ObjectMapper().readValue(decryptedOutput, TransactionEntity.class);
+        } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException | IOException | InvalidKeyException e) {
             e.printStackTrace();
         }
         return null;
