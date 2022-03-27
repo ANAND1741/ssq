@@ -1,0 +1,17 @@
+1. In resource directory, application.properties file have database description.
+   which need to be updated with host,port, db, username, password
+
+2. build module using mvn clean install command in ssq directory And execute java -jar target/ssq-0.0.1-SNAPSHOT.jar
+   OR run in any editor(IntelliJ or Eclispse)
+3. Then Execute following curl
+curl --location --request POST 'localhost:8080/enqueue' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "accountNumber": "1233213",
+    "type":"Credit",
+    "amount":"1000",
+    "currency":"INR",
+    "accountFrom":"23456789"
+}'
+
+4. You can verify by checking data in databases.
